@@ -20,14 +20,30 @@ export const Card1 = ({ type, data, setLabs }) => {
   const toast = useToast();
 
   const handleApproved = async () => {
-    await axios.post(
-      `${process.env.REACT_APP_SERVER}/labs/approve/${data._id}`,
-      {}
-    );
-    const response = await axios.get(
-      `${process.env.REACT_APP_SERVER}/getAllResponses`
-    );
-    setLabs(response.response);
+    try {
+      await axios.post(
+        `${process.env.REACT_APP_SERVER}/labs/approve/${data._id}`,
+        {}
+      );
+      const response = await axios.get(
+        `${process.env.REACT_APP_SERVER}/getAllResponses`
+      );
+
+      setLabs(response.data);
+      toast({
+        title: "Lab Approved",
+        status: "success",
+        duration: 9000,
+        isClosable: true,
+      });
+    } catch (error) {
+      toast({
+        title: error.message,
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
+    }
   };
 
   const handleDeline = async () => {
@@ -59,7 +75,12 @@ export const Card1 = ({ type, data, setLabs }) => {
                 <ListItem>Owner Name:- {data.name}</ListItem>
                 <ListItem>Phone:- {data.phone}</ListItem>
                 <ListItem>Email:- {data.email}</ListItem>
-                <ListItem>test:- {data.test}</ListItem>
+                <ListItem>
+                  tests:-{" "}
+                  {data.tests.map((e) => {
+                    return `${e},`;
+                  })}
+                </ListItem>
                 <ListItem>Sample capacity:- {data.sampleCapacity}</ListItem>
                 <ListItem>Lab size:- {data.labSize} sqft.</ListItem>
                 <ListItem>Landmark:- {data.landmark}</ListItem>
@@ -109,7 +130,12 @@ export const Card1 = ({ type, data, setLabs }) => {
                   <ListItem>Owner Name:- {data.name}</ListItem>
                   <ListItem>Phone:- {data.phone}</ListItem>
                   <ListItem>Email:- {data.email}</ListItem>
-                  <ListItem>test:- {data.test}</ListItem>
+                  <ListItem>
+                    tests:-{" "}
+                    {data.tests.map((e) => {
+                      return `${e},`;
+                    })}
+                  </ListItem>
                   <ListItem>Sample capacity:- {data.sampleCapacity}</ListItem>
                   <ListItem>Lab size:- {data.labSize} sqft.</ListItem>
                   <ListItem>Landmark:- {data.landmark}</ListItem>
