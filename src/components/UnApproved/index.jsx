@@ -2,8 +2,6 @@ import React, { useEffect } from "react";
 import { Box, Grid, Text, GridItem } from "@chakra-ui/react";
 import { Card1 } from "../Cart";
 import { useOwnStore } from "../../zustand";
-import { motion } from "framer-motion";
-import axios from "axios";
 
 export const UnApproved = () => {
   const { labs, setLabs } = useOwnStore();

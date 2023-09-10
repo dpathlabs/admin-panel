@@ -77,7 +77,7 @@ export const Card1 = ({ type, data, setLabs }) => {
                 <ListItem>Email:- {data.email}</ListItem>
                 <ListItem>
                   tests:-{" "}
-                  {data.tests.map((e) => {
+                  {data?.tests?.map((e) => {
                     return `${e},`;
                   })}
                 </ListItem>
