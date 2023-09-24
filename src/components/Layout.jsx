@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Text, Flex } from "@chakra-ui/react";
 import { Outlet, useNavigate } from "react-router-dom";
 export const Layout = ({ user, setUser }) => {
   const navigate = useNavigate();
+  useEffect(() => {
+    navigate("/unapproved");
+  }, []);
+
   return (
     <Box
       sx={{
@@ -19,22 +23,6 @@ export const Layout = ({ user, setUser }) => {
           p: 5,
         }}
       >
-        <Text
-          sx={{
-            display: "flex",
-            color: "white",
-            opacity: "50%",
-            cursor: "pointer",
-            transition: "all 300ms",
-          }}
-          _hover={{
-            opacity: "90%",
-          }}
-          onClick={() => navigate("/")}
-        >
-          Home
-        </Text>
-
         <Text
           sx={{
             display: "flex",
@@ -94,10 +82,10 @@ export const Layout = ({ user, setUser }) => {
             _hover={{
               opacity: "90%",
             }}
-            onClick={()=>{
-              localStorage.clear()
-              setUser(null)
-              navigate("/login")
+            onClick={() => {
+              localStorage.clear();
+              setUser(null);
+              navigate("/login");
             }}
           >
             Logout

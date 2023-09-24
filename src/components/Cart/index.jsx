@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import {
   Card,
   CardBody,
@@ -18,8 +18,10 @@ import axios from "axios";
 
 export const Card1 = ({ type, data, setLabs }) => {
   const toast = useToast();
+  const [loading, setLoading] = useState(false);
 
   const handleApproved = async () => {
+    setLoading(true);
     try {
       await axios.post(
         `${process.env.REACT_APP_SERVER}/labs/approve/${data._id}`,
@@ -43,6 +45,8 @@ export const Card1 = ({ type, data, setLabs }) => {
         duration: 9000,
         isClosable: true,
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -66,8 +70,11 @@ export const Card1 = ({ type, data, setLabs }) => {
               mt="6"
               spacing="3"
               sx={{
+                display: "flex",
+                width: "md",
                 textAlign: "start",
                 alignItems: "flex-start",
+                wordWrap: "break-word",
               }}
             >
               <Heading size="xl">{data.labName}</Heading>
@@ -78,7 +85,7 @@ export const Card1 = ({ type, data, setLabs }) => {
                 <ListItem>
                   tests:-{" "}
                   {data?.tests?.map((e) => {
-                    return `${e},`;
+                    `${e},`;
                   })}
                 </ListItem>
                 <ListItem>Sample capacity:- {data.sampleCapacity}</ListItem>
@@ -94,6 +101,8 @@ export const Card1 = ({ type, data, setLabs }) => {
             <ButtonGroup spacing="2">
               <motion.box whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.8 }}>
                 <Button
+                  isLoading={loading}
+                  loadingText="Submitting"
                   variant="solid"
                   colorScheme="green"
                   onClick={handleApproved}
@@ -132,7 +141,7 @@ export const Card1 = ({ type, data, setLabs }) => {
                   <ListItem>Email:- {data.email}</ListItem>
                   <ListItem>
                     tests:-{" "}
-                    {data.tests.map((e) => {
+                    {data?.tests?.map((e) => {
                       return `${e},`;
                     })}
                   </ListItem>

@@ -1,5 +1,5 @@
 import "./App.css";
-import { Flex } from "@chakra-ui/react";
+import { Box, Flex, Spinner, useToast } from "@chakra-ui/react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { Layout } from "./components/Layout";
 import { Home } from "./components/Home";
@@ -14,17 +14,32 @@ import { useOwnStore } from "./zustand";
 function App() {
   const [user, setUser] = useState("");
   const { setLabs } = useOwnStore();
+  const [loading, setLoading] = useState(false);
+  const toast = useToast();
 
   useEffect(() => {
     setUser(localStorage.getItem("user"));
   }, []);
 
   useEffect(() => {
+    setLoading(true);
     const fetchLabs = async () => {
-      const labs = await axios.get(
-        `${process.env.REACT_APP_SERVER}/getAllResponses`
-      );
-      setLabs(labs.data);
+      try {
+        const labs = await axios.get(
+          `${process.env.REACT_APP_SERVER}/getAllResponses`
+        );
+        setLabs(labs.data);
+      } catch (error) {
+        toast({
+          title: error.message,
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+        });
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
     };
     fetchLabs();
   }, []);
@@ -36,6 +51,7 @@ function App() {
         height: "100vh",
         flexDir: "column",
         width: "100vw",
+        height: "100vh",
         justifyContent: "space",
         alignItems: "center",
         background: "#282c34",
@@ -46,18 +62,29 @@ function App() {
         <Routes>
           <Route path="/" element={<Layout user={user} setUser={setUser} />}>
             <Route
-              path="/"
-              element={
-                <Protected user={user}>
-                  <Home user={user} />
-                </Protected>
-              }
-            />
-            <Route
               path="/approved"
               element={
                 <Protected user={user}>
-                  <Approved user={user} />
+                  {loading ? (
+                    <Box
+                      sx={{
+                        width: "100vw",
+                        height: "90vh",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Spinner
+                        thickness="4px"
+                        speed="0.65s"
+                        emptyColor="gray.200"
+                        color="teal.500"
+                        size="xl"
+                      />
+                    </Box>
+                  ) : (
+                    <Approved user={user} />
+                  )}
                 </Protected>
               }
             />
@@ -65,7 +92,26 @@ function App() {
               path="/unapproved"
               element={
                 <Protected user={user}>
-                  <UnApproved user={user} />
+                  {loading ? (
+                    <Box
+                      sx={{
+                        width: "100vw",
+                        height: "90vh",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Spinner
+                        thickness="4px"
+                        speed="0.65s"
+                        emptyColor="gray.200"
+                        color="teal.500"
+                        size="xl"
+                      />
+                    </Box>
+                  ) : (
+                    <UnApproved user={user} />
+                  )}
                 </Protected>
               }
             />
