@@ -13,7 +13,13 @@ export const Approved = () => {
       <Text opacity={"80%"} fontWeight={"bold"} fontSize={"3xl"}>
         Approved Labs
       </Text>
-      <Grid templateColumns="repeat(4, 1fr)" gap={6} mt={5}>
+      <Grid
+        templateColumns="repeat(auto-fill, minmax(250px, 400px))"
+        spacing={"4"}
+        justifyContent="center"
+        gap={6}
+        mt={5}
+      >
         {labs?.map((lab, key) => {
           if (!lab?.isApproved) {
             return null;

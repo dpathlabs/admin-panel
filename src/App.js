@@ -19,7 +19,9 @@ function App() {
 
   useEffect(() => {
     setUser(localStorage.getItem("user"));
-  }, []);
+    console.log("calling in app component");
+    console.log(user);
+  });
 
   useEffect(() => {
     setLoading(true);
@@ -28,6 +30,7 @@ function App() {
         const labs = await axios.get(
           `${process.env.REACT_APP_SERVER}/getAllResponses`
         );
+        console.log("logging all lab responses data",labs.data);
         setLabs(labs.data);
       } catch (error) {
         toast({
@@ -42,6 +45,7 @@ function App() {
       }
     };
     fetchLabs();
+    console.log("fetching all labs in the app");
   }, []);
   return (
     <Flex

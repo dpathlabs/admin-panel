@@ -17,6 +17,7 @@ import { motion } from "framer-motion";
 import axios from "axios";
 
 export const Card1 = ({ type, data, setLabs }) => {
+  console.log("calling card and checking types", type, data);
   const toast = useToast();
   const [loading, setLoading] = useState(false);
 
@@ -78,15 +79,21 @@ export const Card1 = ({ type, data, setLabs }) => {
               }}
             >
               <Heading size="xl">{data.labName}</Heading>
-              <UnorderedList>
+              <UnorderedList overflowX={"hidden"}>
                 <ListItem>Owner Name:- {data.name}</ListItem>
                 <ListItem>Phone:- {data.phone}</ListItem>
                 <ListItem>Email:- {data.email}</ListItem>
-                <ListItem>
-                  tests:-{" "}
-                  {data?.tests?.map((e) => {
-                    `${e},`;
-                  })}
+                <ListItem textAlign={"left"}>
+                  <Text noOfLines={3}>
+                    tests:-
+                    {data?.tests?.map((e, index) => {
+                      // Truncate each test name after 3 words
+                      const truncatedTest = e.split(" ").slice(0, 3).join(" ");
+                      return index !== data.tests.length - 1
+                        ? `${truncatedTest}, `
+                        : truncatedTest;
+                    })}
+                  </Text>
                 </ListItem>
                 <ListItem>Sample capacity:- {data.sampleCapacity}</ListItem>
                 <ListItem>Lab size:- {data.labSize} sqft.</ListItem>
@@ -135,16 +142,26 @@ export const Card1 = ({ type, data, setLabs }) => {
                 }}
               >
                 <Heading size="lg">{data.labName}</Heading>
-                <UnorderedList>
+                <UnorderedList overflowX={"hidden"}>
                   <ListItem>Owner Name:- {data.name}</ListItem>
                   <ListItem>Phone:- {data.phone}</ListItem>
                   <ListItem>Email:- {data.email}</ListItem>
-                  <ListItem>
-                    tests:-{" "}
-                    {data?.tests?.map((e) => {
-                      return `${e},`;
-                    })}
+                  <ListItem textAlign={"left"}>
+                    <Text noOfLines={3}>
+                      tests:-
+                      {data?.tests?.map((e, index) => {
+                        // Truncate each test name after 3 words
+                        const truncatedTest = e
+                          .split(" ")
+                          .slice(0, 3)
+                          .join(" ");
+                        return index !== data.tests.length - 1
+                          ? `${truncatedTest}, `
+                          : truncatedTest;
+                      })}
+                    </Text>
                   </ListItem>
+
                   <ListItem>Sample capacity:- {data.sampleCapacity}</ListItem>
                   <ListItem>Lab size:- {data.labSize} sqft.</ListItem>
                   <ListItem>Landmark:- {data.landmark}</ListItem>

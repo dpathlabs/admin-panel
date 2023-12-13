@@ -5,13 +5,15 @@ import { useOwnStore } from "../../zustand";
 
 export const UnApproved = () => {
   const { labs, setLabs } = useOwnStore();
+  console.log("calling labs in unapproved component", labs);
+  
 
   return (
     <Box color={"white"} marginTop={10}>
       <Text opacity={"80%"} fontWeight={"bold"} fontSize={"3xl"}>
         UnApproved Labs
       </Text>
-      <Grid templateColumns="repeat(4, 1fr)" gap={6} mt={5}>
+      <Grid templateColumns={["repeat(2,1fr)", "repeat(4,1fr)"]} gap={6} mt={5}>
         {labs?.map((lab, key) => {
           if (lab.isApproved) {
             return null;
